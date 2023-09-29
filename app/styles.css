@@ -1,0 +1,13 @@
+body {
+    margin: 0;
+    background-color: #333;
+}
+
+iframe{
+    overflow-clip-margin: content-box !important;
+    border-width: 2px;
+    border-style: inset;
+    border-color: #444;
+    border-image: initial;
+    overflow: clip !important;
+}
