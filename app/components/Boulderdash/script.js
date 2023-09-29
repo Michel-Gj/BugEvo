@@ -62,8 +62,8 @@ function main(){
 
 // Wiederholungen
 function rf() {
-    playerCanMove = true;
     zellenArray = nextZellen;
+    playerCanMove = true;
 
     for(i = zellenArray.length - 1; i >= 0; i--){
         zellenArray[i].forEach(zelle => {
@@ -143,52 +143,41 @@ class Zelle{
         const cell = document.createElement('div');
         cell.classList.add('cell');
 
-        switch (this.type) {
-            case 'erde':
-                cell.style.backgroundImage = `url('../../../Images/erde.png')`;
-                break;
-            case 'stein':
-                cell.style.backgroundImage = `url('../../../Images/stein.png')`;
-                break;
-            case 'mauer':
-                cell.style.backgroundImage = `url('../../../Images/mauer.png')`;
-                break;
-            case 'empty':
-                cell.style.backgroundImage = `url('../../../Images/empty.png')`;
-                break;
-            case 'guy':
-                cell.style.backgroundImage = `url('../../../Images/guy.png')`;
-                break;
-            case 'border':
-                cell.style.backgroundImage = `url('../../../Images/border.png')`;
-                break;
+        cell.classList.add('cell');
+        const imagePath = this.getImagePath(this.type);
+
+        if (imagePath) {
+            cell.style.backgroundImage = `url('${imagePath}')`;
         }
 
         return cell;
     }
 
-    changeType(type) {
-        this.type = type;
-
-        switch (this.type) {
-            case 'erde':
-                this.element.style.backgroundImage = `url('../../../Images/erde.png')`;
-                break;
-            case 'stein':
-                this.element.style.backgroundImage = `url('../../../Images/stein.png')`;
-                break;
-            case 'mauer':
-                this.element.style.backgroundImage = `url('../../../Images/mauer.png')`;
-                break;
+    getImagePath(type) {
+        switch (type) {
             case 'empty':
-                this.element.style.backgroundImage = `url('../../../Images/empty.png')`;
-                break;
-            case 'guy':
-                this.element.style.backgroundImage = `url('../../../Images/guy.png')`;
-                break;
+                return '../../../Images/empty.png';
+            case 'erde':
+                return '../../../Images/erde.png';
+            case 'stein':
+                return '../../../Images/stein.png';
+            case 'mauer':
+                return '../../../Images/mauer.png';
             case 'border':
-                cell.style.backgroundImage = `url('../../../Images/border.png')`;
-                break;
+                return '../../../Images/border.png';
+            case 'guy':
+                return '../../../Images/guy.png';
+            default:
+                return ;
+        }
+    }
+
+    changeType(type) {
+        const imagePath = this.getImagePath(type);
+
+        if (imagePath) {
+            this.type = type;
+            this.element.style.backgroundImage = `url('${imagePath}')`;
         }
     }
 
@@ -217,10 +206,10 @@ class Zelle{
                 nextZellen[this.y][this.x].changeType('empty');
                 nextZellen[this.y + 1][this.x].changeType('stein');
 				nextZellen[this.y + 1][this.x].setBlocked();
-            } else if ((this.x - 1) >= 0 && zellenArray[this.y][this.x - 1].getType() == 'empty' && zellenArray[this.y + 1][this.x - 1].getType() == 'empty' && ['stein', 'mauer'].includes(zellenArray[this.y][this.x - 1].getType())) {
+            } else if ((this.x - 1) >= 0 && zellenArray[this.y][this.x - 1].getType() == 'empty' && zellenArray[this.y + 1][this.x - 1].getType() == 'empty' && ['stein', 'mauer'].includes(zellenArray[this.y + 1][this.x].getType())) {
                 nextZellen[this.y][this.x].changeType('empty');
                 nextZellen[this.y][this.x - 1].changeType('stein');
-            } else if ((this.x + 1) < numSpalten && zellenArray[this.y][this.x + 1].getType() == 'empty' && zellenArray[this.y + 1][this.x + 1].getType() == 'empty' && ['stein', 'mauer'].includes(zellenArray[this.y][this.x + 1].getType())) {
+            } else if ((this.x + 1) < numSpalten && zellenArray[this.y][this.x + 1].getType() == 'empty' && zellenArray[this.y + 1][this.x + 1].getType() == 'empty' && ['stein', 'mauer'].includes(zellenArray[this.y + 1][this.x].getType())) {
                 nextZellen[this.y][this.x].changeType('empty');
                 nextZellen[this.y][this.x + 1].changeType('stein');
             } else {
