@@ -2,9 +2,6 @@
 
 // Konstanten
 const container = document.querySelector('.container');
-const audio_steps = new Audio('../../../Music/steps.mp3');
-const audio_smacking = new Audio('../../../Music/smacking.mp3');
-const audio_bang = new Audio('../../../Music/bang.mp3');
 const refreshRate = setInterval( rf, 120);
 const grid = [ // Level 1
     'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b',
@@ -31,12 +28,25 @@ const grid = [ // Level 1
     'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'
 ];
 
+const getAudio = (audio) => { 
+    switch(audio){
+		case 'steps':
+			return '../../../Music/steps.mp3';
+		case 'smacking':
+			return '../../../Music/smacking.mp3';
+		case 'bang':
+			return '../../../Music/bang.mp3';
+        default:
+            return null;
+	}
+}
+
 // Verschiedene Variablen
 let numZeilen = 22; // Anfangsanzahl der Zeilen
 let numSpalten = 40; // Anfangsanzahl der Spalten
 let playerAlife = false;
 let player;
-let pCanMove = false;
+let playerCanMove = false;
 
 // Arrays
 let zellenArray = new Array(numZeilen).fill(null).map(() => new Array(numSpalten).fill(null)); // Deklaration des Arrays außerhalb der Funktione
@@ -52,7 +62,7 @@ function main(){
 
 // Wiederholungen
 function rf() {
-    pCanMove = true;
+    playerCanMove = true;
     zellenArray = nextZellen;
 
     for(i = zellenArray.length - 1; i >= 0; i--){
@@ -63,18 +73,13 @@ function rf() {
 }
 
 // Sounds
-function playAudio(audio){
-	switch(audio){
-		case 'steps':
-			audio_steps.play();
-			break;
-		case 'smacking':
-			audio_smacking.play();
-			break;
-		case 'bang':
-			audio_bang.play();
-			break;
-	}
+function playAudio(audio) {
+	const audioElement = new Audio(getAudio(audio));
+    if (audioElement) {
+        audioElement.play().catch((error) => {
+            console.error(`Error playing audio: ${error}`);
+        });
+    }
 }
 
 // Spielfeld
@@ -212,10 +217,10 @@ class Zelle{
                 nextZellen[this.y][this.x].changeType('empty');
                 nextZellen[this.y + 1][this.x].changeType('stein');
 				nextZellen[this.y + 1][this.x].setBlocked();
-            } else if ((this.x - 1) >= 0 && zellenArray[this.y][this.x - 1].getType() == 'empty' && zellenArray[this.y + 1][this.x - 1].getType() == 'empty' && (zellenArray[this.y + 1][this.x].getType() == 'stein' || zellenArray[this.y + 1][this.x].getType() == 'mauer')) {
+            } else if ((this.x - 1) >= 0 && zellenArray[this.y][this.x - 1].getType() == 'empty' && zellenArray[this.y + 1][this.x - 1].getType() == 'empty' && ['stein', 'mauer'].includes(zellenArray[this.y][this.x - 1].getType())) {
                 nextZellen[this.y][this.x].changeType('empty');
                 nextZellen[this.y][this.x - 1].changeType('stein');
-            } else if ((this.x + 1) < numSpalten && zellenArray[this.y][this.x + 1].getType() == 'empty' && zellenArray[this.y + 1][this.x + 1].getType() == 'empty' && (zellenArray[this.y + 1][this.x].getType() == 'stein' || zellenArray[this.y + 1][this.x].getType() == 'mauer')) {
+            } else if ((this.x + 1) < numSpalten && zellenArray[this.y][this.x + 1].getType() == 'empty' && zellenArray[this.y + 1][this.x + 1].getType() == 'empty' && ['stein', 'mauer'].includes(zellenArray[this.y][this.x + 1].getType())) {
                 nextZellen[this.y][this.x].changeType('empty');
                 nextZellen[this.y][this.x + 1].changeType('stein');
             } else {
@@ -238,7 +243,7 @@ class Zelle{
 
     // Prüft auf akzeptierte Bewegung
     pValidBewegung(newY, newX) {
-        return newX >= 0 && newY >= 0 && newX < numSpalten && newY < numZeilen && (zellenArray[newY][newX].getType() == 'erde' || zellenArray[newY][newX].getType() == 'empty');
+        return newX >= 0 && newY >= 0 && newX < numSpalten && newY < numZeilen && ['erde', 'empty'].includes(zellenArray[newY][newX].getType());
     }
 
     // Bewegt Spieler
@@ -254,14 +259,14 @@ class Zelle{
             nextZellen[newY][newX].changeType('guy');
             player[0] = newY;
             player[1] = newX;
-            pCanMove = false;
+            playerCanMove = false;
         }
     }
 }
 
 // Spieler Steuerung
 function pControl(event) {
-    if (pCanMove) {
+    if (playerCanMove) {
         let newX = zellenArray[player[0]][player[1]].x;
         let newY = zellenArray[player[0]][player[1]].y;
 
