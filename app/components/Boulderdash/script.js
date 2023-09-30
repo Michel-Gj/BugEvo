@@ -47,17 +47,17 @@ const getAudioPath = (audio) => {
 // Bilder Verweise
 const getImagePath = (type) => {
     switch (type) {
-        case 'empty':
+        case '0': // Leeres Feld
             return './Images/empty.png';
-        case 'erde':
-            return './Images/erde.png';
-        case 'stein':
-            return './Images/stein.png';
-        case 'mauer':
-            return './Images/mauer.png';
-        case 'border':
+        case 'e': // Erdhaufen
+            return './Images/earth.png';
+        case 's': // Steinkugel
+            return './Images/stone.png';
+        case 'b': // Grenzmarkierung
             return './Images/border.png';
-        case 'player':
+        case 'm': // Mauer
+            return './Images/wall.png';
+        case 'p': // Spieler
             return './Images/player.png';
         default:
             return null;
@@ -93,7 +93,7 @@ function rf() {
 
     for(i = zellenArray.length - 1; i >= 0; i--){
         zellenArray[i].forEach(zelle => {
-			if(zelle.getType() == 'stein') zelle.move();
+			if(zelle.getType() == 's') zelle.move();
 		});
     }
 }
@@ -115,32 +115,11 @@ function createGrid() {
 
 	for (let zeile = 0; zeile < numZeilen; zeile++) {
         for (let spalte = 0; spalte < numSpalten; spalte++) {
-            let tempTypeChar = grid[zeile * numSpalten + spalte];
-            let tempTypeString = 'empty';
+            let tempType = grid[zeile * numSpalten + spalte];
+            
+            if(tempType == 'p') player = [zeile, spalte];
 
-            switch(tempTypeChar){
-                case '0':
-                    tempTypeString = 'empty';
-                    break;
-                case 'e':
-                    tempTypeString = 'erde';
-                    break;
-                case 's':
-                    tempTypeString = 'stein';
-                    break;
-                case 'b':
-                    tempTypeString = 'border';
-                    break;
-                case 'm':
-                    tempTypeString = 'mauer';
-                    break
-                case 'p':
-                    tempTypeString = 'player';
-                    player = [zeile, spalte];
-                    break;
-            }
-
-            const zelle = new Zelle(tempTypeString, zeile, spalte);
+            const zelle = new Zelle(tempType, zeile, spalte);
             zellenArray[zeile][spalte] = zelle; // Zelle zum Array hinzufügen
         }
     }
@@ -204,17 +183,17 @@ class Zelle{
 
     // Stein in Bewegung
     move() {
-        if ((this.y + 1) < numZeilen && this.type == 'stein') {
-            if (zellenArray[this.y + 1][this.x].getType() == 'empty') {
-                nextZellen[this.y][this.x].changeType('empty');
-                nextZellen[this.y + 1][this.x].changeType('stein');
+        if ((this.y + 1) < numZeilen && this.type == 's') {
+            if (zellenArray[this.y + 1][this.x].getType() == '0') {
+                nextZellen[this.y][this.x].changeType('0');
+                nextZellen[this.y + 1][this.x].changeType('s');
 				nextZellen[this.y + 1][this.x].setBlocked();
-            } else if ((this.x - 1) >= 0 && zellenArray[this.y][this.x - 1].getType() == 'empty' && zellenArray[this.y + 1][this.x - 1].getType() == 'empty' && ['stein', 'mauer'].includes(zellenArray[this.y + 1][this.x].getType())) {
-                nextZellen[this.y][this.x].changeType('empty');
-                nextZellen[this.y][this.x - 1].changeType('stein');
-            } else if ((this.x + 1) < numSpalten && zellenArray[this.y][this.x + 1].getType() == 'empty' && zellenArray[this.y + 1][this.x + 1].getType() == 'empty' && ['stein', 'mauer'].includes(zellenArray[this.y + 1][this.x].getType())) {
-                nextZellen[this.y][this.x].changeType('empty');
-                nextZellen[this.y][this.x + 1].changeType('stein');
+            } else if ((this.x - 1) >= 0 && zellenArray[this.y][this.x - 1].getType() == '0' && zellenArray[this.y + 1][this.x - 1].getType() == '0' && ['s', 'm'].includes(zellenArray[this.y + 1][this.x].getType())) {
+                nextZellen[this.y][this.x].changeType('0');
+                nextZellen[this.y][this.x - 1].changeType('s');
+            } else if ((this.x + 1) < numSpalten && zellenArray[this.y][this.x + 1].getType() == '0' && zellenArray[this.y + 1][this.x + 1].getType() == '0' && ['s', 'm'].includes(zellenArray[this.y + 1][this.x].getType())) {
+                nextZellen[this.y][this.x].changeType('ß');
+                nextZellen[this.y][this.x + 1].changeType('s');
             } else {
                 this.ifBlocked();
             }
@@ -225,7 +204,7 @@ class Zelle{
 
     // Stein Aufprall
     ifBlocked() {
-        if (this.blocked && this.type == 'stein') {
+        if (this.blocked && this.type == 's') {
             playAudio('bang');
             this.blocked = false;
         }
@@ -236,20 +215,20 @@ class Zelle{
 
     // Prüft auf akzeptierte Bewegung
     pValidBewegung(newY, newX) {
-        return newX >= 0 && newY >= 0 && newX < numSpalten && newY < numZeilen && ['erde', 'empty'].includes(zellenArray[newY][newX].getType());
+        return newX >= 0 && newY >= 0 && newX < numSpalten && newY < numZeilen && ['e', '0'].includes(zellenArray[newY][newX].getType());
     }
 
     // Bewegt Spieler
     pBewegung(newY, newX) {
-        if(this.type == 'player'){
-            if (zellenArray[newY][newX].getType() == 'erde') {
+        if(this.type == 'p'){
+            if (zellenArray[newY][newX].getType() == 'e') {
                 playAudio('smacking');
-            } else if (zellenArray[newY][newX].getType() == 'empty') {
+            } else if (zellenArray[newY][newX].getType() == '0') {
                 playAudio('steps');
             }
             
-            nextZellen[this.y][this.x].changeType('empty');
-            nextZellen[newY][newX].changeType('player');
+            nextZellen[this.y][this.x].changeType('0');
+            nextZellen[newY][newX].changeType('p');
             player[0] = newY;
             player[1] = newX;
             playerCanMove = false;
