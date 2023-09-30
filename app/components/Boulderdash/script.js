@@ -3,6 +3,8 @@
 // Konstanten
 const container = document.querySelector('.container');
 const refreshRate = setInterval( rf, 120);
+
+// Spielfeld
 const grid = [ // Level 1
     'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b',
     'b', 'e', 'e', 'e', 'e', 'e', 'e', '0', 'e', 'e', 'e', 'e', 's', '0', 'e', 'e', 'e', 'e', 'e', 's', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', '0', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'b',
@@ -28,29 +30,53 @@ const grid = [ // Level 1
     'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'
 ];
 
-const getAudio = (audio) => { 
+// Audio Verweise
+const getAudioPath = (audio) => { 
     switch(audio){
 		case 'steps':
-			return '../../../Music/steps.mp3';
+			return './Music/steps.mp3';
 		case 'smacking':
-			return '../../../Music/smacking.mp3';
+			return './Music/smacking.mp3';
 		case 'bang':
-			return '../../../Music/bang.mp3';
+			return './Music/bang.mp3';
         default:
             return null;
 	}
 }
 
-// Verschiedene Variablen
+// Bilder Verweise
+const getImagePath = (type) => {
+    switch (type) {
+        case 'empty':
+            return './Images/empty.png';
+        case 'erde':
+            return './Images/erde.png';
+        case 'stein':
+            return './Images/stein.png';
+        case 'mauer':
+            return './Images/mauer.png';
+        case 'border':
+            return './Images/border.png';
+        case 'player':
+            return './Images/player.png';
+        default:
+            return null;
+    }
+}
+
+// Grid Größenordnung 
 let numZeilen = 22; // Anfangsanzahl der Zeilen
 let numSpalten = 40; // Anfangsanzahl der Spalten
+
+// Spieler Variablen
 let playerAlife = false;
 let player;
 let playerCanMove = false;
 
-// Arrays
+// Zellen
 let zellenArray = new Array(numZeilen).fill(null).map(() => new Array(numSpalten).fill(null)); // Deklaration des Arrays außerhalb der Funktione
 let nextZellen = new Array(numZeilen).fill(null).map(() => new Array(numSpalten).fill(null)); // Deklaration des Arrays außerhalb der Funktione
+
 
 // Hauptfunktion
 function main(){
@@ -74,7 +100,7 @@ function rf() {
 
 // Sounds
 function playAudio(audio) {
-	const audioElement = new Audio(getAudio(audio));
+	const audioElement = new Audio(getAudioPath(audio));
     if (audioElement) {
         audioElement.play().catch((error) => {
             console.error(`Error playing audio: ${error}`);
@@ -82,7 +108,7 @@ function playAudio(audio) {
     }
 }
 
-// Spielfeld
+// Spielfeld erstellen
 function createGrid() {
     container.style.gridTemplateRows = `repeat(${numZeilen}, 32px)`; // 30px für Zeilenhöhe
 	container.style.gridTemplateColumns = `repeat(${numSpalten}, 32px)`; // 30px für Spaltenbreite
@@ -109,7 +135,7 @@ function createGrid() {
                     tempTypeString = 'mauer';
                     break
                 case 'p':
-                    tempTypeString = 'guy';
+                    tempTypeString = 'player';
                     player = [zeile, spalte];
                     break;
             }
@@ -139,12 +165,13 @@ class Zelle{
         this.element = this.createDOMElement();
     }
 
+    // DOM Element erstellen
     createDOMElement() {
         const cell = document.createElement('div');
         cell.classList.add('cell');
 
         cell.classList.add('cell');
-        const imagePath = this.getImagePath(this.type);
+        const imagePath = getImagePath(this.type);
 
         if (imagePath) {
             cell.style.backgroundImage = `url('${imagePath}')`;
@@ -153,27 +180,9 @@ class Zelle{
         return cell;
     }
 
-    getImagePath(type) {
-        switch (type) {
-            case 'empty':
-                return '../../../Images/empty.png';
-            case 'erde':
-                return '../../../Images/erde.png';
-            case 'stein':
-                return '../../../Images/stein.png';
-            case 'mauer':
-                return '../../../Images/mauer.png';
-            case 'border':
-                return '../../../Images/border.png';
-            case 'guy':
-                return '../../../Images/guy.png';
-            default:
-                return ;
-        }
-    }
-
+    // Gattung ändern
     changeType(type) {
-        const imagePath = this.getImagePath(type);
+        const imagePath = getImagePath(type);
 
         if (imagePath) {
             this.type = type;
@@ -181,25 +190,19 @@ class Zelle{
         }
     }
 
+    // Gattung exportieren
     getType() {
         return this.type;
     }
 
-    getX() {
-        return this.x;
-    }
+    // Stein:
 
-    getY() {
-        return this.y;
-    }
-
-
-    // Stein
-
+    // Stein steht
 	setBlocked(){
 		this.blocked = true;
 	}
 
+    // Stein in Bewegung
     move() {
         if ((this.y + 1) < numZeilen && this.type == 'stein') {
             if (zellenArray[this.y + 1][this.x].getType() == 'empty') {
@@ -220,6 +223,7 @@ class Zelle{
         }
     }
 
+    // Stein Aufprall
     ifBlocked() {
         if (this.blocked && this.type == 'stein') {
             playAudio('bang');
@@ -228,7 +232,7 @@ class Zelle{
     }
 
 
-    // Guy
+    // Player:
 
     // Prüft auf akzeptierte Bewegung
     pValidBewegung(newY, newX) {
@@ -237,7 +241,7 @@ class Zelle{
 
     // Bewegt Spieler
     pBewegung(newY, newX) {
-        if(this.type == 'guy'){
+        if(this.type == 'player'){
             if (zellenArray[newY][newX].getType() == 'erde') {
                 playAudio('smacking');
             } else if (zellenArray[newY][newX].getType() == 'empty') {
@@ -245,7 +249,7 @@ class Zelle{
             }
             
             nextZellen[this.y][this.x].changeType('empty');
-            nextZellen[newY][newX].changeType('guy');
+            nextZellen[newY][newX].changeType('player');
             player[0] = newY;
             player[1] = newX;
             playerCanMove = false;
