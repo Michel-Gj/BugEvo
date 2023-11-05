@@ -7,26 +7,26 @@ const refreshRate = setInterval( rf, 120);
 // Spielfeld
 const grid = [ // Level 1
     'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b',
-    'b', 'e', 'e', 'e', 'e', 'e', 'e', '0', 'e', 'e', 'e', 'e', 's', '0', 'e', 'e', 'e', 'e', 'e', 's', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', '0', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'b',
-    'b', 'e', 's', 'p', 's', 'e', 'e', 'e', 'e', 'e', 'e', '0', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', '0', 'e', 'e', 'e', 'e', 'e', '0', 'e', 'e', 'b',
+    'b', 'e', 'e', 'e', 'e', 'e', 'e', '0', 'e', 'e', 'g', 'e', 's', '0', 'e', 'e', 'e', 'e', 'e', 's', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', '0', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'b',
+    'b', 'e', 's', 'p', 's', 'e', 'e', 'e', 'e', 'e', 'e', '0', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'g', 'e', 'e', 's', 'e', 'e', 'e', 'e', '0', 'e', 'e', 'e', 'e', 'e', '0', 'e', 'e', 'b',
     'b', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', '0', 'e', 'e', '0', 'e', 'e', 'e', 'e', 'e', 's', 'e', 's', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'b',
     'b', 's', 'e', '0', '0', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 's', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'b',
     'b', 's', 'e', 's', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 's', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 's', 'e', 'e', 'b',
     'b', 'e', 'e', 'e', 's', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 's', 'e', '0', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 's', 's', 'e', 'b',
     'b', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'e', 'e', 'e', 's', 'e', 'e', 's', 'e', 'b',
-    'b', 'e', '0', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', '0', 'e', 'e', 's', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', '0', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'b',
-    'b', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', '0', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', '0', '0', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'b',
+    'b', 'e', '0', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', '0', 'e', 'e', 's', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'g', 'e', 's', '0', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'b',
+    'b', 'e', 'e', 'g', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', '0', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', '0', '0', 's', 'e', 'e', 'g', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'b',
     'b', 'e', 'e', 'e', 's', 'e', 'e', 's', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 's', 'e', 's', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'b',
-    'b', 'e', '0', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 's', '0', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', '0', 'e', 'b',
-    'b', 'e', 's', 'e', 'e', '0', 'e', 'e', 's', 'e', '0', '0', 'e', 'e', 'e', 'e', 'e', 's', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', 's', 'e', 'b',
-    'b', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 's', 's', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'b',
+    'b', 'e', '0', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 's', '0', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 's', 'e', 'g', 'e', 'e', 'e', 'e', '0', 'e', 'b',
+    'b', 'e', 's', 'e', 'e', '0', 'e', 'e', 's', 'e', '0', '0', 'e', 'e', 'e', 'e', 'e', 's', 'e', 's', 'g', 'e', 'e', 'g', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 's', 'e', 'e', 'g', 'e', 's', 'e', 'b',
+    'b', 'e', 'g', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 's', 's', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'g', 'e', 'e', 'e', 'e', 'e', 's', 'b',
     'b', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'b',
-    'b', '0', '0', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', '0', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'b',
+    'b', '0', '0', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', '0', 'e', 'e', 'e', 'g', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'b',
     'b', 's', '0', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 's', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 's', '0', 'e', 'e', 'b', 'b',
-    'b', 'e', 's', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 's', 'e', '0', '0', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 's', 's', 'e', 'e', 'e', 'b',
-    'b', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', '0', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'b',
-    'b', 'e', 'e', 'e', '0', 'e', 'e', '0', 'e', 's', 'e', 'e', 's', 'e', 's', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 's', 'b',
-    'b', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', '0', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', '0', 'e', 's', 'e', 'e', 's', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 's', 'e', 'b',
+    'b', 'e', 's', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 's', 'e', '0', '0', 'e', 'e', 'e', 'e', 'g', 'e', 'e', 'e', 's', 'e', 's', 's', 'e', 'e', 'e', 'b',
+    'b', 'e', 'e', 'e', 'e', 's', 'g', 'e', 'e', '0', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 's', 'g', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'b',
+    'b', 'e', 'e', 'e', '0', 'e', 'e', '0', 'e', 's', 'e', 'e', 's', 'e', 's', 's', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 's', 'g', 'e', 'e', 'e', 'e', 'e', 'e', 's', 'e', 'e', 's', 'b',
+    'b', 'e', 'g', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 'e', 'e', '0', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', '0', 'e', 's', 'e', 'e', 's', 'e', 'e', 'e', 'e', 's', 'e', 'e', 'e', 's', 'e', 'b',
     'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'
 ];
 
@@ -53,12 +53,14 @@ const getImagePath = (type) => {
             return './Images/earth.png';
         case 's': // Steinkugel
             return './Images/stone.png';
+        case 'g': // Edelstein
+            return './Images/gem.png';
+        case 'p': // Spieler
+            return './Images/player.png';
         case 'b': // Grenzmarkierung
             return './Images/border.png';
         case 'm': // Mauer
             return './Images/wall.png';
-        case 'p': // Spieler
-            return './Images/player.png';
         default:
             return null;
     }
@@ -75,7 +77,6 @@ let playerCanMove = false;
 
 // Zellen
 let zellenArray = new Array(numZeilen).fill(null).map(() => new Array(numSpalten).fill(null)); // Deklaration des Arrays außerhalb der Funktione
-let nextZellen = new Array(numZeilen).fill(null).map(() => new Array(numSpalten).fill(null)); // Deklaration des Arrays außerhalb der Funktione
 
 
 // Hauptfunktion
@@ -88,10 +89,8 @@ function main(){
 
 // Wiederholungen
 function rf() {
-    zellenArray = nextZellen;
     playerCanMove = true;
-
-    for(i = zellenArray.length - 1; i >= 0; i--){
+    for(i = 0; i < zellenArray.length; i++){
         zellenArray[i].forEach(zelle => {
 			if(zelle.getType() == 's') zelle.move();
 		});
@@ -124,8 +123,6 @@ function createGrid() {
         }
     }
 
-    nextZellen = zellenArray;
-
 	// Zellen aus dem Array auf der Webseite anzeigen
     zellenArray.forEach(zeile => {
         zeile.forEach(zelle => {
@@ -148,8 +145,7 @@ class Zelle{
     createDOMElement() {
         const cell = document.createElement('div');
         cell.classList.add('cell');
-
-        cell.classList.add('cell');
+        
         const imagePath = getImagePath(this.type);
 
         if (imagePath) {
@@ -183,17 +179,18 @@ class Zelle{
 
     // Stein in Bewegung
     move() {
-        if ((this.y + 1) < numZeilen && this.type == 's') {
+        if ((this.y + 1) < numZeilen && ['s', 'g'].includes(this.type)) {
             if (zellenArray[this.y + 1][this.x].getType() == '0') {
-                nextZellen[this.y][this.x].changeType('0');
-                nextZellen[this.y + 1][this.x].changeType('s');
-				nextZellen[this.y + 1][this.x].setBlocked();
+                zellenArray[this.y + 1][this.x].changeType(this.type);;
+                zellenArray[this.y][this.x].changeType('0')
+				zellenArray[this.y + 1][this.x].setBlocked();
             } else if ((this.x - 1) >= 0 && zellenArray[this.y][this.x - 1].getType() == '0' && zellenArray[this.y + 1][this.x - 1].getType() == '0' && ['s', 'm'].includes(zellenArray[this.y + 1][this.x].getType())) {
-                nextZellen[this.y][this.x].changeType('0');
-                nextZellen[this.y][this.x - 1].changeType('s');
+                zellenArray[this.y][this.x - 1].changeType(this.type)
+                zellenArray[this.y][this.x].changeType('0');
             } else if ((this.x + 1) < numSpalten && zellenArray[this.y][this.x + 1].getType() == '0' && zellenArray[this.y + 1][this.x + 1].getType() == '0' && ['s', 'm'].includes(zellenArray[this.y + 1][this.x].getType())) {
-                nextZellen[this.y][this.x].changeType('ß');
-                nextZellen[this.y][this.x + 1].changeType('s');
+                zellenArray[this.y][this.x + 1].changeType(this.type);
+                zellenArray[this.y][this.x].changeType('0');
+                console.log(zellenArray[this.y][this.x + 1].getType());
             } else {
                 this.ifBlocked();
             }
@@ -221,14 +218,16 @@ class Zelle{
     // Bewegt Spieler
     pBewegung(newY, newX) {
         if(this.type == 'p'){
+            console.log('p');
             if (zellenArray[newY][newX].getType() == 'e') {
                 playAudio('smacking');
             } else if (zellenArray[newY][newX].getType() == '0') {
                 playAudio('steps');
             }
             
-            nextZellen[this.y][this.x].changeType('0');
-            nextZellen[newY][newX].changeType('p');
+            
+            zellenArray[this.y][this.x].changeType('0');
+            zellenArray[newY][newX].changeType('p');
             player[0] = newY;
             player[1] = newX;
             playerCanMove = false;
