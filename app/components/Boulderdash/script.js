@@ -2,8 +2,8 @@
 
 // Konstanten
 const container = document.querySelector('.container');
-const refreshRateStein = setInterval( rfs, 200);
-const refreshRatePlayer = setInterval( rfp, 100);
+const updateMovingObjects = setInterval( us, 200);
+const updatePlayer = setInterval( up, 100);
 const movingObjects = [];
 
 
@@ -91,14 +91,14 @@ function main(){
 }
 
 // Stein Update
-function rfs() {
+function us() {
     for (const obj of movingObjects) {
         obj.move();
     }
 }
 
 // Player Update
-function rfp() {
+function up() {
     playerCanMove = true;
 }
 
@@ -123,7 +123,7 @@ function createGrid() {
             
             if(tempType == 'p') player = [zeile, spalte];
 
-            if (tempType == 's') {
+            if (["s", "g"].includes(tempType)) {
                 const zelle = new Zelle(tempType, zeile, spalte);
                 movingObjects.push(zelle);
             }
@@ -215,6 +215,8 @@ class Zelle{
         }
     }
 
+    //delete movingObject
+
     // Stein Aufprall
     ifBlocked() {
         if (this.blocked && this.type == 's') {
@@ -228,7 +230,7 @@ class Zelle{
 
     // Prüft auf akzeptierte Bewegung
     pValidBewegung(newY, newX) {
-        return newX >= 0 && newY >= 0 && newX < numSpalten && newY < numZeilen && ['e', '0'].includes(zellenArray[newY][newX].getType());
+        return newX >= 0 && newY >= 0 && newX < numSpalten && newY < numZeilen && ['0', 'e', 'g'].includes(zellenArray[newY][newX].getType());
     }
 
     // Bewegt Spieler
@@ -236,6 +238,8 @@ class Zelle{
         if(this.type == 'p'){
             console.log('p');
             if (zellenArray[newY][newX].getType() == 'e') {
+                playAudio('smacking');
+            } else if (zellenArray[newY][newX].getType() == 'g') {
                 playAudio('smacking');
             } else if (zellenArray[newY][newX].getType() == '0') {
                 playAudio('steps');
