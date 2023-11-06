@@ -2,8 +2,8 @@
 
 // Konstanten
 const container = document.querySelector('.container');
-const updateMovingObjects = setInterval( us, 200);
-const updatePlayer = setInterval( up, 100);
+const updateMovingObjects = setInterval(us, 200);
+const updatePlayer = setInterval(up, 100);
 const movingObjects = [];
 
 
@@ -42,6 +42,10 @@ const getAudioPath = (audio) => {
 			return './Music/smacking.mp3';
 		case 'bang':
 			return './Music/bang.mp3';
+        case 'bling':
+            return './Music/bling.mp3';
+        case 'up':
+            return './Music/up.mp3';
         default:
             return null;
 	}
@@ -92,9 +96,7 @@ function main(){
 
 // Stein Update
 function us() {
-    for (const obj of movingObjects) {
-        obj.move();
-    }
+    for(let i = 0; i < movingObjects.length; i++) movingObjects[i].move(i);
 }
 
 // Player Update
@@ -187,26 +189,24 @@ class Zelle{
 	}
 
     // Stein in Bewegung
-    move() {
+    move(i) {
         if ((this.y + 1) < numZeilen && ['s', 'g'].includes(this.type)) {
-            console.log(zellenArray[4][4].getType());
-            if (zellenArray[this.y + 1][this.x].getType() == '0') {
+            if(this.type == 'g' && zellenArray[this.y][this.x].getType() == 'p'){
+                movingObjects[i].changeType('0');
+            }else if (zellenArray[this.y + 1][this.x].getType() == '0') {
                 zellenArray[this.y + 1][this.x].changeType(this.type);;
                 zellenArray[this.y][this.x].changeType('0')
 				zellenArray[this.y + 1][this.x].setBlocked();
                 this.y++;
                 this.setBlocked();
-                console.log("a");
             } else if ((this.x - 1) >= 0 && zellenArray[this.y][this.x - 1].getType() == '0' && zellenArray[this.y + 1][this.x - 1].getType() == '0' && ['s', 'm'].includes(zellenArray[this.y + 1][this.x].getType())) {
                 zellenArray[this.y][this.x - 1].changeType(this.type)
                 zellenArray[this.y][this.x].changeType('0');
                 this.x--;
-                console.log("b");
             } else if ((this.x + 1) < numSpalten && zellenArray[this.y][this.x + 1].getType() == '0' && zellenArray[this.y + 1][this.x + 1].getType() == '0' && ['s', 'm'].includes(zellenArray[this.y + 1][this.x].getType())) {
                 zellenArray[this.y][this.x + 1].changeType(this.type);
                 zellenArray[this.y][this.x].changeType('0');
                 this.x++;
-                console.log("c");
             } else {
                 this.ifBlocked();
             }
@@ -221,6 +221,9 @@ class Zelle{
     ifBlocked() {
         if (this.blocked && this.type == 's') {
             playAudio('bang');
+            this.blocked = false;
+        } else if (this.blocked && this.type == 'g') {
+            playAudio('bling');
             this.blocked = false;
         }
     }
@@ -240,7 +243,7 @@ class Zelle{
             if (zellenArray[newY][newX].getType() == 'e') {
                 playAudio('smacking');
             } else if (zellenArray[newY][newX].getType() == 'g') {
-                playAudio('smacking');
+                playAudio('up');
             } else if (zellenArray[newY][newX].getType() == '0') {
                 playAudio('steps');
             }
