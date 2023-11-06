@@ -2,7 +2,10 @@
 
 // Konstanten
 const container = document.querySelector('.container');
-const refreshRate = setInterval( rf, 120);
+const refreshRateStein = setInterval( rfs, 200);
+const refreshRatePlayer = setInterval( rfp, 100);
+const movingObjects = [];
+
 
 // Spielfeld
 const grid = [ // Level 1
@@ -87,14 +90,16 @@ function main(){
 	document.addEventListener('keydown', pControl);
 }
 
-// Wiederholungen
-function rf() {
-    playerCanMove = true;
-    for(i = 0; i < zellenArray.length; i++){
-        zellenArray[i].forEach(zelle => {
-			if(zelle.getType() == 's') zelle.move();
-		});
+// Stein Update
+function rfs() {
+    for (const obj of movingObjects) {
+        obj.move();
     }
+}
+
+// Player Update
+function rfp() {
+    playerCanMove = true;
 }
 
 // Sounds
@@ -118,6 +123,10 @@ function createGrid() {
             
             if(tempType == 'p') player = [zeile, spalte];
 
+            if (tempType == 's') {
+                const zelle = new Zelle(tempType, zeile, spalte);
+                movingObjects.push(zelle);
+            }
             const zelle = new Zelle(tempType, zeile, spalte);
             zellenArray[zeile][spalte] = zelle; // Zelle zum Array hinzufügen
         }
@@ -180,17 +189,24 @@ class Zelle{
     // Stein in Bewegung
     move() {
         if ((this.y + 1) < numZeilen && ['s', 'g'].includes(this.type)) {
+            console.log(zellenArray[4][4].getType());
             if (zellenArray[this.y + 1][this.x].getType() == '0') {
                 zellenArray[this.y + 1][this.x].changeType(this.type);;
                 zellenArray[this.y][this.x].changeType('0')
 				zellenArray[this.y + 1][this.x].setBlocked();
+                this.y++;
+                this.setBlocked();
+                console.log("a");
             } else if ((this.x - 1) >= 0 && zellenArray[this.y][this.x - 1].getType() == '0' && zellenArray[this.y + 1][this.x - 1].getType() == '0' && ['s', 'm'].includes(zellenArray[this.y + 1][this.x].getType())) {
                 zellenArray[this.y][this.x - 1].changeType(this.type)
                 zellenArray[this.y][this.x].changeType('0');
+                this.x--;
+                console.log("b");
             } else if ((this.x + 1) < numSpalten && zellenArray[this.y][this.x + 1].getType() == '0' && zellenArray[this.y + 1][this.x + 1].getType() == '0' && ['s', 'm'].includes(zellenArray[this.y + 1][this.x].getType())) {
                 zellenArray[this.y][this.x + 1].changeType(this.type);
                 zellenArray[this.y][this.x].changeType('0');
-                console.log(zellenArray[this.y][this.x + 1].getType());
+                this.x++;
+                console.log("c");
             } else {
                 this.ifBlocked();
             }
