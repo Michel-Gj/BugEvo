@@ -91,7 +91,7 @@ function main(){
 	createGrid();
 
 	// Eventlistener für Tastendruck
-	document.addEventListener('keydown', pControl);
+	document.addEventListener('keydown', control);
 }
 
 // Stein Update
@@ -125,7 +125,7 @@ function createGrid() {
             
             if(tempType == 'p') player = [zeile, spalte];
 
-            if (["s", "g"].includes(tempType)) {
+            if (['s', 'g'].includes(tempType)) {
                 const zelle = new Zelle(tempType, zeile, spalte);
                 movingObjects.push(zelle);
             }
@@ -199,14 +199,18 @@ class Zelle{
 				zellenArray[this.y + 1][this.x].setBlocked();
                 this.y++;
                 this.setBlocked();
-            } else if ((this.x - 1) >= 0 && zellenArray[this.y][this.x - 1].getType() == '0' && zellenArray[this.y + 1][this.x - 1].getType() == '0' && ['s', 'm'].includes(zellenArray[this.y + 1][this.x].getType())) {
+            } else if ((this.x - 1) >= 0 && zellenArray[this.y][this.x - 1].getType() == '0' && zellenArray[this.y + 1][this.x - 1].getType() == '0' && ['s', 'm', 'g'].includes(zellenArray[this.y + 1][this.x].getType())) {
                 zellenArray[this.y][this.x - 1].changeType(this.type)
                 zellenArray[this.y][this.x].changeType('0');
                 this.x--;
-            } else if ((this.x + 1) < numSpalten && zellenArray[this.y][this.x + 1].getType() == '0' && zellenArray[this.y + 1][this.x + 1].getType() == '0' && ['s', 'm'].includes(zellenArray[this.y + 1][this.x].getType())) {
+            } else if ((this.x + 1) < numSpalten && zellenArray[this.y][this.x + 1].getType() == '0' && zellenArray[this.y + 1][this.x + 1].getType() == '0' && ['s', 'm', 'g'].includes(zellenArray[this.y + 1][this.x].getType())) {
                 zellenArray[this.y][this.x + 1].changeType(this.type);
                 zellenArray[this.y][this.x].changeType('0');
                 this.x++;
+            } else if(this.emptySide(this.x)){
+                if((this.x - 1) >= 0 && (this.x + 1) < numSpalten){
+                    
+                }
             } else {
                 this.ifBlocked();
             }
@@ -215,7 +219,10 @@ class Zelle{
         }
     }
 
-    //delete movingObject
+    emptySide(){
+        if([zellenArray[this.y][this.x - 1].getType(), zellenArray[this.y][this.x + 1].getType()].includes('0') && [zellenArray[this.y][this.x - 1].getType(), zellenArray[this.y][this.x + 1].getType()].includes('p')) return true;
+        else return false;
+    }
 
     // Stein Aufprall
     ifBlocked() {
@@ -259,7 +266,7 @@ class Zelle{
 }
 
 // Spieler Steuerung
-function pControl(event) {
+function control(event) {
     if (playerCanMove) {
         let newX = zellenArray[player[0]][player[1]].x;
         let newY = zellenArray[player[0]][player[1]].y;
