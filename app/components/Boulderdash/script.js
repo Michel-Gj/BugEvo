@@ -83,6 +83,7 @@ let player;
 let playerCanMove = false;
 
 // Zellen
+let statsZellen = new Array(numSpalten);
 let zellenArray = new Array(numZeilen).fill(null).map(() => new Array(numSpalten).fill(null)); // Deklaration des Arrays außerhalb der Funktione
 
 
@@ -116,8 +117,13 @@ function playAudio(audio) {
 
 // Spielfeld erstellen
 function createGrid() {
-    container.style.gridTemplateRows = `repeat(${numZeilen}, 32px)`; // 30px für Zeilenhöhe
-	container.style.gridTemplateColumns = `repeat(${numSpalten}, 32px)`; // 30px für Spaltenbreite
+    container.style.gridTemplateRows = `repeat(${numZeilen + 1}, 32px)`; // 32px für Zeilenhöhe
+	container.style.gridTemplateColumns = `repeat(${numSpalten}, 32px)`; // 32px für Spaltenbreite
+
+    for(let spalte = 0; spalte < numSpalten; spalte++){
+        const zelle = new Zelle('0', -1, spalte);
+        statsZellen[spalte] = zelle; // Zelle zum Array hinzufügen
+    }
 
 	for (let zeile = 0; zeile < numZeilen; zeile++) {
         for (let spalte = 0; spalte < numSpalten; spalte++) {
@@ -135,11 +141,33 @@ function createGrid() {
     }
 
 	// Zellen aus dem Array auf der Webseite anzeigen
+    statsZellen.forEach(zelle => {
+        container.appendChild(zelle.element);
+    });
+
     zellenArray.forEach(zeile => {
         zeile.forEach(zelle => {
             container.appendChild(zelle.element);
         });
     });
+}
+
+class dashboard{
+
+    // DOM Element erstellen
+    createDOMElement() {
+        container.style.gridTemplateColumns = `repeat(${numSpalten}, 32px)`; // 32px für Spaltenbreite
+        const cell = document.createElement('div');
+        cell.classList.add('cell');
+        
+        const imagePath = getImagePath('g');
+
+        if (imagePath) {
+            cell.style.backgroundImage = `url('${imagePath}')`;
+        }
+
+        return cell;
+    }
 }
 
 // Zellen
