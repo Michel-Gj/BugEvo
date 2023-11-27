@@ -6,6 +6,15 @@ const updateMovingObjects = setInterval(us, 200);
 const updatePlayer = setInterval(up, 100);
 const movingObjects = [];
 
+// Objekte
+const OBJECT = {
+    VOID:   { id: 0, throwing: false},
+    DIRT:   { id: 1, throwing: false, edible: true},
+    STONE:  { id: 2, throwing: true},
+    GEM:    { id: 3, throwing: true},
+    BORDER: { id: 4, throwing: false},
+    WALL:   { id: 5, throwing: true}
+};
 
 // Spielfeld
 const grid = [ // Level 1
