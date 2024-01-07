@@ -494,15 +494,15 @@ class Logic{
 
     updateBoulder(position){
         if(this.isempty(position, DIR.DOWN)) this.set(position, OBJECT.BOULDERFALLING);
-        else if(this.isrounded(position, DIR.DOWN) && this.isempty(position, DIR.LEFT) && this.isempty(position, DIR.DOWNLEFT)) this.move(position, DIR.LEFT, OBJECT.BOULDERFALLING);
         else if(this.isrounded(position, DIR.DOWN) && this.isempty(position, DIR.RIGHT) && this.isempty(position, DIR.DOWNRIGHT)) this.move(position, DIR.RIGHT, OBJECT.BOULDERFALLING);
+        else if(this.isrounded(position, DIR.DOWN) && this.isempty(position, DIR.LEFT) && this.isempty(position, DIR.DOWNLEFT)) this.move(position, DIR.LEFT, OBJECT.BOULDERFALLING);
     }
 
     updateBoulderFalling(position){
         if(this.isempty(position, DIR.DOWN)) this.move(position, DIR.DOWN, OBJECT.BOULDERFALLING);
         else if(this.isexplodable(position, DIR.DOWN)) this.explode(position, DIR.DOWN);
-        else if(this.isrounded(position, DIR.DOWN) && this.isempty(position, DIR.LEFT) && this.isempty(position, DIR.DOWNLEFT)) this.move(position, DIR.LEFT, OBJECT.BOULDERFALLING);
         else if(this.isrounded(position, DIR.DOWN) && this.isempty(position, DIR.RIGHT) && this.isempty(position, DIR.DOWNRIGHT)) this.move(position, DIR.RIGHT, OBJECT.BOULDERFALLING);
+        else if(this.isrounded(position, DIR.DOWN) && this.isempty(position, DIR.LEFT) && this.isempty(position, DIR.DOWNLEFT)) this.move(position, DIR.LEFT, OBJECT.BOULDERFALLING);
         else this.set(position, OBJECT.BOULDER);
     }
 
